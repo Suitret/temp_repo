@@ -2,10 +2,13 @@
 #include <stddef.h>
 
 /**
- * merge_sort - this is an implementation
+ * merge - this is an implementation
  * of the merge sorting algorithm
- * @array: the array to be sorted
- * @size: the size of the array
+ * @arr: the array to be sorted
+ * @tempArray: a tempory array
+ * @lowerIndex: an int element
+ * @middleIndex: an int element
+ * @upperIndex: an int element
  *
  * Return: a type void element
  */
@@ -22,13 +25,13 @@ void merge(int *arr, int *tempArray, int lowerIndex,
 
 	while (lowerStart <= lowerStop && upperStart <= upperStop)
 	{
-		if(arr[lowerStart] < arr[upperStart])
+		if (arr[lowerStart] < arr[upperStart])
 			tempArray[count++] = arr[lowerStart++];
 		else
 			tempArray[count++] = arr[upperStart++];
 	}
 
-        while (lowerStart <= lowerStop)
+	while (lowerStart <= lowerStop)
 	{
 		tempArray[count++] = arr[lowerStart++];
 	}
@@ -40,11 +43,22 @@ void merge(int *arr, int *tempArray, int lowerIndex,
 		arr[i] = tempArray[i];
 }
 
-void mergeSrt(int *arr,int* tempArray, int lowerIndex, int upperIndex)
+/**
+ * mergeSrt - this is an implementation
+ * of the merge sorting algorithm
+ * @arr: the array to be sorted
+ * @tempArray: a tempory array
+ * @lowerIndex: an int element
+ * @upperIndex: an int element
+ *
+ * Return: a type void element
+ */
+
+void mergeSrt(int *arr, int *tempArray, int lowerIndex, int upperIndex)
 {
 	int middleIndex;
 
-	if(lowerIndex >= upperIndex)
+	if (lowerIndex >= upperIndex)
 		return;
 
 	middleIndex = (lowerIndex + upperIndex) / 2;
@@ -53,9 +67,18 @@ void mergeSrt(int *arr,int* tempArray, int lowerIndex, int upperIndex)
 	merge(arr, tempArray, lowerIndex, middleIndex, upperIndex);
 }
 
+/**
+ * merge_sort - this is an implementation
+ * of the merge sorting algorithm
+ * @arr: the array to be sorted
+ * @size: size of the array
+ *
+ * Return: a type void element
+ */
+
 void merge_sort(int *arr, size_t size)
 {
-	int *tempArray = (int*)malloc(size*sizeof(int));
+	int *tempArray = (int *)malloc(size * sizeof(int));
 
 	mergeSrt(arr, tempArray, 0, (int)size - 1);
 }
