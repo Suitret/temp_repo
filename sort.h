@@ -31,6 +31,8 @@ void heap_sort(int *array, size_t size);
 void heapify(int *array, size_t size, int end, int i);
 void swap(int *a, int *b);
 void radix_sort(int *array, size_t size);
+int getMax(int arr[], int n);
+void countSort(int arr[], size_t n, int exp);
 void bitonic_sort(int *array, size_t size);
 void compAndSwap(int a[], int i, int j, int dir, int size);
 void bitonicMerge(int a[], int low, int cnt, int dir, int size);
