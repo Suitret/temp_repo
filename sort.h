@@ -39,5 +39,10 @@ void bitonicMerge(int a[], int low, int cnt, int dir, int size);
 void bitonicSort(int a[], int low, int cnt, int dir, int size);
 void quick_sort_hoare(int *array, size_t size);
 
+void swap(int arr[], int first, int second);
+void merge(int *arr, int *tempArray, int lowerIndex, int middleIndex,
+           int upperIndex);
+void mergeSrt(int *arr, int *tempArray, int lowerIndex, int upperIndex);
+void merge_sort(int *arr, size_t size);
 
 #endif /* _SORT_H */
