@@ -21,15 +21,15 @@ class BaseModel:
             None
         """
 
-        if kwargs and kwargs is not None and type(kwargs) != None:
+        if kwargs and kwargs is not None and type(kwargs) is not None:
             if "__class__" in kwargs.keys():
                 kwargs.pop("__class__")
             date_format = "%Y-%m-%dT%H:%M:%S.%f"
-            if 'created_at' in kwargs.keys():
+            if "created_at" in kwargs.keys():
                 kwargs["created_at"] = datetime.datetime.strptime(
                     kwargs["created_at"], date_format
                 )
-            if 'updated_at' in kwargs.keys():
+            if "updated_at" in kwargs.keys():
                 kwargs["updated_at"] = datetime.datetime.strptime(
                     kwargs["updated_at"], date_format
                 )
@@ -46,7 +46,7 @@ class BaseModel:
         Returns:
             None
         """
-        to_be_returned = f"{[self.__class__.__name__]} " \
+        to_be_returned = f"{[self.__class__.__name__]} "\
                          f"({self.id}) {self.__dict__}"
 
         return to_be_returned

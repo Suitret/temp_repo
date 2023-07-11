@@ -19,7 +19,7 @@ class User:
     password = str()
     first_name = str()
     last_name = str()
-    
+
     def __init__(self):
         """User's class constructor
 
