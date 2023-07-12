@@ -2,6 +2,7 @@
 """Module containing FileStorage class
 """
 import json
+import models
 
 
 class FileStorage:
@@ -21,14 +22,28 @@ class FileStorage:
         Args:
             obj : instance of a class
         """
-        key = obj.__name__ + obj.id
+        key = str(obj.__name__.__name__) + "." + str(obj.id)
         self.__objects[key] = obj
 
     def save(self):
         """Serializes __objects to the JSON file
         """
-        json_str = json.dump(self.__objects)
-        with open(self.__file_path, "a") as file:
-            file.write(json_str)
+        objects_dict = {}
+        for key, val in self.__objects.items():
+            objects_dict[key] = val.to_dict()
 
-    
+        with open(self.__file_path, mode='w', encoding="UTF8") as fd:
+            json.dump(objects_dict, fd)
+
+    def reload(self):
+        """deserializes the JSON file to __objects
+        """
+        try:
+            with open(FileStorage.__file_path, encoding="UTF8") as fd:
+                self.__objects = json.load(fd)
+            for key, val in FileStorage.__objects.items():
+                class_name = val["__class__"]
+                class_name = models.classes[class_name]
+                FileStorage.__objects[key] = class_name(**val)
+        except FileNotFoundError:
+            pass
