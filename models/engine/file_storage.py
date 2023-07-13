@@ -22,7 +22,7 @@ class FileStorage:
         Args:
             obj : instance of a class
         """
-        key = str(obj.__name__.__name__) + "." + str(obj.id)
+        key = str(obj.__class__.__name__) + "." + str(obj.id)
         self.__objects[key] = obj
 
     def save(self):
