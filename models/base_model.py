@@ -6,6 +6,7 @@ import uuid
 import datetime
 from models import storage
 
+
 class BaseModel:
     """This is the BaseModel class that defines
     all common attributes/methods for other classes:
@@ -47,8 +48,7 @@ class BaseModel:
         Returns:
             None
         """
-        to_be_returned = f"{[self.__class__.__name__]} "\
-                         f"({self.id}) {self.__dict__}"
+        to_be_returned = f"{[self.__class__.__name__]} " f"({self.id}) {self.__dict__}"
 
         return to_be_returned
 

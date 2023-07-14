@@ -7,14 +7,14 @@ import models
 
 class FileStorage:
     """FileStorage class with private class attributes
-       and public instance methods
+    and public instance methods
     """
+
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """Returns the dictionary __objects
-        """
+        """Returns the dictionary __objects"""
         return self.__objects
 
     def new(self, obj):
@@ -26,18 +26,16 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        """Serializes __objects to the JSON file
-        """
+        """Serializes __objects to the JSON file"""
         objects_dict = {}
         for key, val in self.__objects.items():
             objects_dict[key] = val.to_dict()
 
-        with open(self.__file_path, mode='w', encoding="UTF8") as fd:
+        with open(self.__file_path, mode="w", encoding="UTF8") as fd:
             json.dump(objects_dict, fd)
 
     def reload(self):
-        """deserializes the JSON file to __objects
-        """
+        """deserializes the JSON file to __objects"""
         try:
             with open(FileStorage.__file_path, encoding="UTF8") as fd:
                 self.__objects = json.load(fd)

@@ -22,7 +22,7 @@ class TestBaseModel(unittest.TestCase):
         cls.thi_base = BaseModel()
 
     @classmethod
-    def tearDownClass(cls) -> None:
+    def tearDownClass(cls):
         pass
 
     def test_for_correct_type_for_instances(self):

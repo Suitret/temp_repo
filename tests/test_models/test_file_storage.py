@@ -22,7 +22,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsInstance(all_objects, dict)
         self.assertEqual(len(all_objects), 1)
         self.assertIn(f"{self.model.__class__.__name__}./
-            {self.model.id}", all_objects)
+                {self.model.id}", all_objects)
 
     def test_new(self):
         new_model = BaseModel()
