@@ -3,6 +3,7 @@ import json
 import models
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+import os
 
 
 class TestFileStorage(unittest.TestCase):
@@ -21,8 +22,9 @@ class TestFileStorage(unittest.TestCase):
         all_objects = self.storage.all()
         self.assertIsInstance(all_objects, dict)
         self.assertEqual(len(all_objects), 1)
-        self.assertIn(f"{self.model.__class__.__name__}./
-                {self.model.id}", all_objects)
+        self.assertIn(
+            f"{self.model.__class__.__name__}./" f"{self.model.id}", all_objects
+        )
 
     def test_new(self):
         new_model = BaseModel()
@@ -45,11 +47,12 @@ class TestFileStorage(unittest.TestCase):
             saved_data = json.load(fd)
         self.assertIsInstance(saved_data, dict)
         self.assertEqual(len(saved_data), 1)
-        self.assertIn(f"{self.model.__class__.__name__}./
-            {self.model.id}", saved_data)
+        self.assertIn(
+            f"{self.model.__class__.__name__}./" f"{self.model.id}", saved_data
+        )
 
         # Clean up the temporary file
-        import os
+
         os.remove(file_path)
 
     def test_reload(self):

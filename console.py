@@ -9,12 +9,13 @@ import sys
 import json
 from models import storage
 from models.base_model import BaseModel
-#from models import User
-#from models import Review
-#from models import Place
-#from models import Amenity
-#from models import City
-#from models import State
+
+# from models import User
+# from models import Review
+# from models import Place
+# from models import Amenity
+# from models import City
+# from models import State
 
 
 class HBNBCommand(cmd.Cmd):
@@ -38,8 +39,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def help_quit(self):
-        """This is the documentation for help with quit as argument
-        """
+        """This is the documentation for help with quit as argument"""
         print(
             "\n".join(
                 [
@@ -62,8 +62,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def help_EOF(self):
-        """This is the documentation for help with EOF as argument
-        """
+        """This is the documentation for help with EOF as argument"""
         print(
             "\n".join(
                 [
@@ -108,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
             cls: the argument passed when create is called
             within the command line interpreter
         """
-        my_cls = ['User', 'BaseModel', 'City', 'Place', 'Amenity', 'State']
+        my_cls = ["User", "BaseModel", "City", "Place", "Amenity", "State"]
         if not cls:
             print("** class name missing **")
         elif cls not in my_cls:
@@ -129,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
             args: the arguments passed when show is called
             within the command line interpreter
         """
-        my_cls = ['User', 'BaseModel', 'City', 'Place', 'Amenity', 'State']
+        my_cls = ["User", "BaseModel", "City", "Place", "Amenity", "State"]
         arguments = args.split()
         if not args:
             print("** class name missing **")
@@ -138,14 +137,14 @@ class HBNBCommand(cmd.Cmd):
         elif len(arguments) == 1:
             print("** instance id missing **")
         else:
-           storage.reload()
-           obj_dict = storage.all()
-           key = arguments[0] + "." + arguments[1]
-           try:
-               value = obj_dict[key]
-               print("{}".format(value))
-           except KeyError:
-               print("** no instance found **")
+            storage.reload()
+            obj_dict = storage.all()
+            key = arguments[0] + "." + arguments[1]
+            try:
+                value = obj_dict[key]
+                print("{}".format(value))
+            except KeyError:
+                print("** no instance found **")
 
     def do_destroy(self, args):
         """This is the documentation for the destroy function
@@ -156,7 +155,7 @@ class HBNBCommand(cmd.Cmd):
             args: the arguments passed when destroy is called
             within the command line interpreter
         """
-        my_cls = ['User', 'BaseModel', 'City', 'Place', 'Amenity', 'State']
+        my_cls = ["User", "BaseModel", "City", "Place", "Amenity", "State"]
         arguments = args.split()
         if not args:
             print("** class name missing **")
@@ -183,7 +182,7 @@ class HBNBCommand(cmd.Cmd):
             args: the arguments passed when all is called
             within the command line interpreter
         """
-        my_cls = ['User', 'BaseModel', 'City', 'Place', 'Amenity', 'State']
+        my_cls = ["User", "BaseModel", "City", "Place", "Amenity", "State"]
         arguments = args.split()
         storage.reload()
         obj_dict = storage.all()
@@ -195,7 +194,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             for key in obj_dict.keys():
                 print("{}".format(obj_dict[key]))
-
 
 
 if __name__ == "__main__":

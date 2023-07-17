@@ -2,7 +2,7 @@
 """Module containing FileStorage class
 """
 import json
-import models
+import models.base_model
 
 
 class FileStorage:
@@ -26,22 +26,35 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        """Serializes __objects to the JSON file"""
-        objects_dict = {}
-        for key, val in self.__objects.items():
-            objects_dict[key] = val.to_dict()
+        """This method serializes __objects to the
+        JSON file (path: __file_path)
 
-        with open(self.__file_path, mode="w", encoding="UTF8") as fd:
-            json.dump(objects_dict, fd)
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        for keys, vals in self.__objects.items():
+            self.__objects[keys] = vals.to_dict()
+        with open(self.__file_path, "w", encoding="utf-8") as fd:
+            json.dump(self.__objects, fd)
 
     def reload(self):
-        """deserializes the JSON file to __objects"""
+        """This method deserializes the JSON file to __objects
+        (only if the JSON file (__file_path) exists ; otherwise,
+        do nothing. If the file doesn’t exist, no exception should be raised)
+
+         Args:
+            None
+
+        Returns:
+            None
+        """
         try:
-            with open(FileStorage.__file_path, encoding="UTF8") as fd:
-                self.__objects = json.load(fd)
-            for key, val in FileStorage.__objects.items():
-                class_name = val["__class__"]
-                class_name = models.classes[class_name]
-                FileStorage.__objects[key] = class_name(**val)
+            with open(self.__file_path, "r", encoding="utf-8") as a_file:
+                self.__objects = json.load(a_file)
+            for keys, values in self.__objects.items():
+                self.__objects[keys] = models.base_model.BaseModel(**values)
         except FileNotFoundError:
             pass
