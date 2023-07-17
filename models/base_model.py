@@ -62,7 +62,7 @@ class BaseModel:
             None
         """
         self.updated_at = datetime.datetime.now()
-        # models.storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """A public instance method that returns a dictionary
