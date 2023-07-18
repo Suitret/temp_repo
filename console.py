@@ -3,7 +3,7 @@
 This module is dedicated to the command interpreter
 of this project, it features the HBNBCommand class
 """
-
+import ast
 import cmd
 import sys
 import json
@@ -27,6 +27,13 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = "(hbnb) "
+    className = {'BaseModel': BaseModel,
+                 'User': User,
+                 'State': State,
+                 'City': City,
+                 'Amenity': Amenity,
+                 'Place': Place,
+                 'Review': Review}
 
     def do_quit(self, line):
         """This is the documentation for the quit function
@@ -107,17 +114,14 @@ class HBNBCommand(cmd.Cmd):
             cls: the argument passed when create is called
             within the command line interpreter
         """
-        my_cls = ["User", "BaseModel", "City", "Place", "Amenity", "State"]
         if not cls:
             print("** class name missing **")
-        elif cls not in my_cls:
+        elif cls not in HBNBCommand.className.keys():
             print("** class doesn't exist **")
         else:
-            cls = globals()[cls]
-            instance = cls()
-            storage.new(instance)
-            storage.save()
-            print("{}".format(instance.id))
+            obj = HBNBCommand.className[cls]()
+            HBNBCommand.className[cls].save(obj)
+            print(obj.id)
 
     def do_show(self, args):
         """This is the documentation for the show function
@@ -239,6 +243,83 @@ class HBNBCommand(cmd.Cmd):
         setattr(obj_value, args[2], args[3])
         obj_value.save()
  
+    def default(self, arg):
+        """Default command that handles class cmds: <class name>.func()"""
+        """
+        <class name>.all(): retrieve all instances of a class
+        <class name>.count(): retrieve the number of instances of a class
+        <class name>.show(<id>): retrieve an instance based on its ID
+        <class name>.destroy(<id>): destroy an instance based on his ID
+        <class name>.update(<id>, <attribute name>, <attribute value>):
+        update an instance based on his ID
+        <class name>.update(<id>, <dictionary representation>):
+        update an instance based on his ID
+        Note: d = ast.literal_eval(re.search('({.+})', update_dict).group(0))
+        """
+        args = arg.split('.', 1)
+        # print("default: {}".format(args))
+        if args[0] in HBNBCommand.className.keys():
+            if args[1].strip('()') == 'all':
+                self.do_all(args[0])
+            elif args[1].strip('()') == 'count':
+                self.obj_count(args[0])
+            elif args[1].split('(')[0] == 'show':
+                self.do_show(args[0]+' '+args[1].split('(')[1].strip(')'))
+            elif args[1].split('(')[0] == 'destroy':
+                self.do_destroy(args[0]+' '+args[1].split('(')[1].strip(')'))
+            elif args[1].split('(')[0] == 'update':
+                arg0 = args[0]
+                if ', ' not in args[1]:
+                    arg1 = args[1].split('(')[1].strip(')')
+                    self.do_update(arg0+' '+arg1)
+                elif ', ' in args[1] and\
+                     '{' in args[1] and ':' in args[1]:
+                    arg1 = args[1].split('(')[1].strip(')').split(', ', 1)[0]
+                    attr_dict = ast.literal_eval(args[1].split('(')[1]
+                                                 .strip(')').split(', ', 1)[1])
+                    # Note: json.loads NOT working here w/ single-quoted values
+                    # attr_dict = json.loads(args[1].split('(')[1].strip(')')\
+                    # .split(', ', 1)[1])
+                    for key, value in attr_dict.items():
+                        self.do_update(arg0+' '+arg1+' '+key+' '+str(value))
+                elif ', ' in args[1] and\
+                     len(args[1].split('(')[1].strip(')').split(', ')) == 2:
+                    arg1 = args[1].split('(')[1].strip(')').split(', ')[0]
+                    arg2 = args[1].split('(')[1].strip(')').split(', ')[1]
+                    self.do_update(arg0+' '+arg1+' '+arg2)
+                elif ', ' in args[1] and\
+                     len(args[1].split('(')[1].strip(')').split(', ')) >= 3:
+                    print(args[1])
+                    arg1 = args[1].split('(')[1].strip(')').split(', ')[0]
+                    print(arg1)
+                    arg2 = args[1].split('(')[1].strip(')').split(', ')[1]
+                    print(arg2)
+                    arg3 = args[1].split('(')[1].strip(')').split(', ')[2]
+                    print(arg3)
+                    self.do_update(arg0+' '+arg1+' '+arg2+' '+arg3)
+            else:
+                print('*** Unknown syntax: {}'.format(arg))
+        else:
+            print("** class doesn't exist **")
+
+    @staticmethod
+    def obj_count(arg):
+        """Obj_count command to print the number of instances of a class"""
+        """
+        Usage: <class name>.count(), retrieve the number of instances
+        of a class
+        """
+        if not arg:
+            print("** class name missing **")
+        elif arg not in HBNBCommand.className.keys():
+            print("** class doesn't exist **")
+        else:
+            counter = 0
+            for key, obj in models.storage._FileStorage__objects.items():
+                if arg == key.split('.')[0]:
+                    counter += 1
+            print(counter)
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

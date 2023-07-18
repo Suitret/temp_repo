@@ -2,9 +2,11 @@
 """
 This modules devises a class named User
 """
+import datetime
+from models.base_model import BaseModel
 
 
-class User:
+class User(BaseModel):
     """This is the User class
 
     Attributes:
@@ -20,7 +22,7 @@ class User:
     first_name = str()
     last_name = str()
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """User's class constructor
 
         Args:
@@ -29,4 +31,5 @@ class User:
         Returns:
             None
         """
+        super().__init__(*args, **kwargs)
         pass

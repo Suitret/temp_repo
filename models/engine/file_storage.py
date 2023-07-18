@@ -2,7 +2,14 @@
 """Module containing FileStorage class
 """
 import json
-import models.base_model
+from models.base_model import BaseModel
+
+from models.user import User
+from models.review import Review
+from models.place import Place
+from models.amenity import Amenity
+from models.city import City
+from models.state import State
 
 
 class FileStorage:
@@ -35,10 +42,11 @@ class FileStorage:
         Returns:
             None
         """
+        temp_dict = {}
         for keys, vals in self.__objects.items():
-            self.__objects[keys] = vals.to_dict()
+            temp_dict[keys] = vals.to_dict()
         with open(self.__file_path, "w", encoding="utf-8") as fd:
-            json.dump(self.__objects, fd)
+            json.dump(temp_dict, fd)
 
     def reload(self):
         """This method deserializes the JSON file to __objects
@@ -51,10 +59,15 @@ class FileStorage:
         Returns:
             None
         """
+        my_cls = ["User", "BaseModel", "City", "Place", "Amenity", "State"]
         try:
-            with open(self.__file_path, "r", encoding="utf-8") as a_file:
+            with open(FileStorage.__file_path, encoding="UTF8") as a_file:
                 FileStorage.__objects = json.load(a_file)
-            for keys, values in self.__objects.items():
-                self.__objects[keys] = models.base_model.BaseModel(**values)
+            for keys, values in FileStorage.__objects.items():
+                for name in my_cls:
+                    if name in keys:
+                        cls = globals()[name]
+                        self.__objects[keys] = cls(**values)
+                        break
         except FileNotFoundError:
             pass
