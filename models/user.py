@@ -29,3 +29,4 @@ class User:
         Returns:
             None
         """
+        pass

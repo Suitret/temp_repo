@@ -10,12 +10,12 @@ import json
 from models import storage
 from models.base_model import BaseModel
 
-# from models import User
-# from models import Review
-# from models import Place
-# from models import Amenity
-# from models import City
-# from models import State
+from models.user import User
+from models.review import Review
+from models.place import Place
+from models.amenity import Amenity
+from models.city import City
+from models.state import State
 
 
 class HBNBCommand(cmd.Cmd):
@@ -183,18 +183,62 @@ class HBNBCommand(cmd.Cmd):
             within the command line interpreter
         """
         my_cls = ["User", "BaseModel", "City", "Place", "Amenity", "State"]
-        arguments = args.split()
+        args = args.split()
         storage.reload()
-        obj_dict = storage.all()
+        obj_dic = storage.all()
         if not args:
-            for key in obj_dict.keys():
-                print("{}".format(obj_dict[key]))
-        elif arguments[0] not in my_cls:
+            tab = [str(obj_dic[k]) for k in obj_dic.keys()]
+            print(tab)
+        elif args[0] not in my_cls:
             print("** class doesn't exist **")
         else:
-            for key in obj_dict.keys():
-                print("{}".format(obj_dict[key]))
+            tab = [str(obj_dic[k]) for k in obj_dic.keys() if args[0] in k]
+            print(tab)
 
+    def do_update(self, args):
+        """This is the documentation for the update function
+        The function called to update an instance based on the
+        class name and id by adding or updating attribute
+
+        Args:
+            args: the arguments passed when all is called
+            within the command line interpreter
+        """
+        my_cls = ["User", "BaseModel", "City", "Place", "Amenity", "State"]
+        args = args.split()
+        storage.reload()
+        obj_dic = storage.all()
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        elif len(args) == 1:
+            print("** instance id missing **")
+            return
+        elif len(args) == 2:
+            print("** attribute name missing **")
+            return
+        elif len(args) == 3:
+            print("** value missing **")
+            return
+        try:
+            eval(args[0])
+        except NameError:
+            print("** class doesn't exist **")
+            return
+        key = args[0] + "." + args[1]
+        try:
+            obj_value = obj_dict[key]
+        except KeyError:
+            print("** no instance found **")
+            return
+        try:
+            attr_type = type(getattr(obj_value, args[2]))
+            args[3] = attr_type(args[3])
+        except AttributeError:
+            pass
+        setattr(obj_value, args[2], args[3])
+        obj_value.save()
+ 
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

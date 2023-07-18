@@ -6,7 +6,7 @@ BaseModel
 from models.base_model import BaseModel
 
 
-class State(BaseModel):
+class City(BaseModel):
     """This is the State class that inherits from
     BaseModel
 
