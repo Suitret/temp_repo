@@ -48,8 +48,8 @@ class TestBaseModel(unittest.TestCase):
         self.thi_base = BaseModel(**self.sec_base.to_dict())
 
         self.assertEqual(self.thi_base.id, self.sec_base.id)
-        self.assertEqual(self.thi_base.created_at.isoformat(), self.sec_base.created_at)
-        self.assertEqual(self.thi_base.updated_at.isoformat(), self.sec_base.updated_at)
+        self.assertEqual(self.thi_base.created_at, self.sec_base.created_at)
+        self.assertEqual(self.thi_base.updated_at, self.sec_base.updated_at)
 
     def test_the_instance_created_with_kwargs_is_different_from_old(self):
         self.assertIsNot(self.sec_base, self.thi_base)

@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """
-This modules devises a class named User
+This module devises a class named User
 """
-import datetime
 from models.base_model import BaseModel
 
 
@@ -32,4 +31,3 @@ class User(BaseModel):
             None
         """
         super().__init__(*args, **kwargs)
-        pass

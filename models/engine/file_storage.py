@@ -29,8 +29,9 @@ class FileStorage:
         Args:
             obj : instance of a class
         """
-        key = str(obj.__class__.__name__) + "." + str(obj.id)
-        self.__objects[key] = obj
+        if obj is not None:
+            key = str(obj.__class__.__name__) + "." + str(obj.id)
+            self.__objects[key] = obj
 
     def save(self):
         """This method serializes __objects to the

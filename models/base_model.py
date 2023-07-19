@@ -48,7 +48,8 @@ class BaseModel:
         Returns:
             None
         """
-        to_be_returned = f"{[self.__class__.__name__]} " f"({self.id}) {self.__dict__}"
+        to_be_returned = f"{[self.__class__.__name__]} " \
+                         f"({self.id}) {self.__dict__}"
         return to_be_returned
 
     def save(self):
@@ -74,8 +75,9 @@ class BaseModel:
         Returns:
             None
         """
-        self.__dict__["__class__"] = self.__class__.__name__
-        self.__dict__["created_at"] = self.created_at.isoformat()
-        self.__dict__["updated_at"] = self.updated_at.isoformat()
 
-        return self.__dict__
+        temp_dict = self.__dict__.copy()
+        temp_dict["__class__"] = self.__class__.__name__
+        temp_dict["created_at"] = self.__dict__["created_at"].isoformat()
+        temp_dict["updated_at"] = self.__dict__["updated_at"].isoformat()
+        return temp_dict
