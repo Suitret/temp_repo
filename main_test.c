@@ -3,6 +3,24 @@
 #include "binary_trees.h"
 
 /**
+ * launch_test - Test ancestor function and print informations
+ *
+ * @n1: First node
+ * @n2: Second node
+ */
+void launch_test(binary_tree_t *n1, binary_tree_t *n2)
+{
+    binary_tree_t *ancestor;
+
+    ancestor = binary_trees_ancestor(n1, n2);
+    printf("Ancestor of [%d] & [%d]: ", n1->n, n2->n);
+    if (!ancestor)
+        printf("(nil)\n");
+    else
+        printf("%d\n", ancestor->n);
+}
+
+/**
  * main - Entry point
  *
  * Return: Always 0 (Success)
@@ -10,24 +28,20 @@
 int main(void)
 {
     binary_tree_t *root;
-    binary_tree_t *uncle;
 
     root = binary_tree_node(NULL, 98);
     root->left = binary_tree_node(root, 12);
-    root->right = binary_tree_node(root, 128);
+    root->right = binary_tree_node(root, 402);
     root->left->right = binary_tree_node(root->left, 54);
-    root->right->right = binary_tree_node(root->right, 402);
+    root->right->right = binary_tree_node(root->right, 128);
     root->left->left = binary_tree_node(root->left, 10);
-    root->right->left = binary_tree_node(root->right, 110);
-    root->right->right->left = binary_tree_node(root->right->right, 200);
-    root->right->right->right = binary_tree_node(root->right->right, 512);
-
+    root->right->left = binary_tree_node(root->right, 45);
+    root->right->right->left = binary_tree_node(root->right->right, 92);
+    root->right->right->right = binary_tree_node(root->right->right, 65);
     binary_tree_print(root);
-    uncle = binary_tree_uncle(root->right->left);
-    printf("Uncle of %d: %d\n", root->right->left->n, uncle->n);
-    uncle = binary_tree_uncle(root->left->right);
-    printf("Uncle of %d: %d\n", root->left->right->n, uncle->n);
-    uncle = binary_tree_uncle(root->left);
-    printf("Uncle of %d: %p\n", root->left->n, (void *)uncle);
+
+    launch_test(root->left, root->right);
+    launch_test(root->right->left, root->right->right->right);
+    launch_test(root->right->right, root->right->right->right);
     return (0);
 }
